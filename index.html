@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Envelope + Letter (Open/Close on Click)</title>
+    <style>
+         :root {
+            --primary: #ffffff;
+            --bg-color: rgb(5, 53, 61);
+            --bg-envelope-color: rgb(86, 86, 91);
+            --envelope-tab: rgb(185, 96, 126);
+            --envelope-cover: #eb700c;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --txt-color: black;
+            --heart-color: rgb(252, 45, 8);
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            height: 100vh;
+            display: grid;
+            place-items: center;
+        }
+        
+        .container>.envelope-wrapper {
+            background: var(--bg-envelope-color);
+            box-shadow: 0 0 40px var(--shadow-color);
+            position: relative;
+            background-image: url(100.png);
+        }
+        
+        .envelope-wrapper>.envelope {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            transform-style: preserve-3d;
+            z-index: 2;
+        }
+        
+        .envelope-wrapper>.envelope::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            z-index: 2;
+            border-top: 130px solid var(--envelope-tab);
+            border-right: 150px solid transparent;
+            border-left: 150px solid transparent;
+            transform-origin: top;
+            transition: all 0.5s ease-in-out;
+        }
+        
+        envelope-wrapper>.envelope::after {
+            content: "";
+            position: absolute;
+            z-index: 2;
+            width: 0px;
+            height: 0px;
+            border-top: 130px solid transparent;
+            border-right: 150px solid var(--envelope-cover);
+            border-bottom: 100px solid var(--envelope-cover);
+            border-left: 150px solid var(--envelope-cover);
+        }
+        
+        .envelope>.letter {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            text-align: center;
+            box-shadow: 0 0 5px var(--shadow-color);
+            padding: 20px 10px;
+            opacity: 0;
+            /* Initially hidden */
+            transform: scale(0);
+            /* Initially not visible */
+            transition: opacity 1s ease, transform 1s ease;
+            z-index: 1;
+            /* Keeps the letter behind the heart */
+            overflow-y: auto;
+        }
+        
+        .envelope>.letter .text {
+            font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+            color: var(--txt-color);
+            text-align: left;
+            font-size: 12px;
+            line-height: 1.6;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        .heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 15px;
+            height: 15px;
+            background: var(--heart-color);
+            z-index: 4;
+            transform: translate(-50%, -20%) rotate(45deg);
+            transition: transform 0.5s ease-in-out 1s;
+            box-shadow: 0 1px 6px var(--shadow-color);
+            cursor: pointer;
+        }
+        
+        .heart:before,
+        .heart:after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: var(--heart-color);
+            border-radius: 50%;
+        }
+        
+        .heart:before {
+            top: -7.5px;
+        }
+        
+        .heart:after {
+            right: 7.5px;
+        }
+        /* Flap Animation */
+        
+        .flap>.envelope::before {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+        
+        .flap>.envelope>.letter {
+            opacity: 1;
+            /* Show the letter */
+            transform: scale(1);
+            /* Scale the letter back to normal */
+        }
+        
+        .flap>.heart {
+            transform: rotate(90deg);
+            transition-delay: 0.4s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="envelope-wrapper">
+            <div class="envelope">
+                <div class="letter">
+                    <div class="text">
+                        <b><strong style="color: blue; font-size: medium;">DEAR HARSHITA</strong>
+                        <p style="font-size: medium;">A purely minimalist effort on my end on this special day as we completed our first month as Life Companion. I hope we shower each other with all the happiness and love we truly deserve.<br></br> You are an incredible person
+                            who has a way of making everything around you brighter and more beautiful. Your kindness and warmth are unmatchable, and I feel so lucky to have you in my life. You're not just my girlfriend; you're my best friend and the most
+                            amazing person I know. You have a unique way of making me feel loved and understood, and I cherish every moment with you. Your smile has the power to turn even the darkest day into something magical, and today is just another
+                            reminder of how amazing you are. I want to fill you with all the things that make you happier. 😌💗
+                            <br></br>
+                            <p style="color: #eb700c;"> YOUR LOVER -- SHUBHAM</p>
+                        </p></b>
+                    </div>
+                </div>
+            </div>
+            <div class="heart"></div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to toggle the opening of the envelope when the heart is clicked
+        const envelope = document.querySelector('.envelope-wrapper');
+        const heart = document.querySelector('.heart');
+
+        heart.addEventListener('click', () => {
+            envelope.classList.toggle('flap'); // This toggles the "flap" class to open/close the envelope
+        });
+    </script>
+</body>
+
+</html>
